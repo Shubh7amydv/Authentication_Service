@@ -11,6 +11,19 @@ class UserRepository {
             throw error;
         }
    }
+
+   // we are creating this method to get our user through userid but dont want other details like hashed password as it will be visible on frontend.So we have to select specifc attributes from tables, for this we will use attributes under findByPk
+   async getById(userId){
+    try {
+        const user=await User.findByPk(userId,{
+            attributes:["email","id","password"]
+        });
+        return user;
+    } catch (error) {
+        console.log("Error while getting user in UserRepository");
+        throw error;
+    }
+   }
    
 }
 
