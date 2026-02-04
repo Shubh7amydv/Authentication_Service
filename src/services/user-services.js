@@ -54,6 +54,7 @@ class UserService{
         try {
             // Fetch the user using email
             const user= await this.userRepository.getByEmail(email);
+            
             // Compare incoming plane password with encrypted password 
             const passwordMatch=this.checkpassword(plainPassword,user.password);
             if(!passwordMatch){
@@ -72,12 +73,27 @@ class UserService{
         }
     }
 
-    async isAuthenticated(){
+    async isAuthenticated(token){
         try {
-            const response=await this.verifyToken(token);
-            
+            // Get the token and verify wheter it is a valid token or not 
+            const response=await  this.verifyToken(token);
+
+            // if token is invalid return "invalid Token"
+            if(!response){
+                throw { error: "Invlid Token"}
+            }
+
+            // If token is valid and user doesnt exist ?? then what 
+            const user=await this.userRepository.getById(response.id);
+            if(!user){
+                throw {error:"NO user with the corresponding data exist "}
+            }
+
+            return user.id;
+                
         } catch (error) {
-            
+            throw {error:"Something went wrong in auth process"};
+        
         }
     }
         

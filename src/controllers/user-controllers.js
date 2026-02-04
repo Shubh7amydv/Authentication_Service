@@ -46,10 +46,49 @@ const signIn= async(req,res)=>{
     }
 }
 
+
+const isAuthenticated= async(req,res) =>{
+    try {
+        const token=req.headers["x-access-token"];
+        const response=await userService.isAuthenticated(token);
+        return res.status(201).json({
+            data:response,
+            success:true,
+            message:"The user id if the person is ",
+            err:{}
+        })
+        
+    } catch (error) {
+        console.log("REQ BODY:", req.body);
+        return res.status(500).json({
+            data:{},
+            success:false,
+            message:"Invalid token is sent",
+            err:error
+        })
+    }
+}
 module.exports={
     createUser,
-    signIn
+    signIn,
+    isAuthenticated
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
