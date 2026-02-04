@@ -71,6 +71,15 @@ class UserService{
             
         }
     }
+
+    async isAuthenticated(){
+        try {
+            const response=await this.verifyToken(token);
+            
+        } catch (error) {
+            
+        }
+    }
         
 }
 
